@@ -6,7 +6,8 @@
     "private": "true",
     "scripts": {
         "test": "jest",
-        "start": "webpack serve --open"
+        "start": "webpack serve --open",
+        "watch": "jest --watch *.js"
     },
     "repository": {
         "type": "git",
