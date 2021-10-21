@@ -2,6 +2,7 @@ const ship = require('./ship');
 
 const gameBoard = () => {
     let gameBoard = [];
+    const shipList = [];
     //When a gameBoard piece is empty, the value will be 0
     const createGameBoard = function () {
         for (let row = 0; row < 8; row++) {
@@ -11,6 +12,7 @@ const gameBoard = () => {
             }
         }
     };
+
     createGameBoard();
     return {
         addShip: length => {
@@ -20,14 +22,22 @@ const gameBoard = () => {
             return gameBoard;
         },
         //Vertical is a boolean
-        positionShip: (vertical, row, column) => {
-            addShip();
+        positionShip: (vertical, row, column, ship) => {
             if (vertical) {
-                for (let i = 0; i < shipLength; i++) {
-                    gameBoard[row][column] = 1;
+                for (let i = 0; i < ship.length; i++) {
+                    gameBoard[row].splice(column, 1, 1);
                     row++;
                 }
+            } else {
+                for (let i = 0; i < ship.length; i++) {
+                    gameBoard[row][column] = 1;
+                    column++;
+                }
             }
+        },
+
+        get shipList() {
+            return shipList;
         },
     };
 };
