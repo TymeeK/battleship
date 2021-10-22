@@ -13,6 +13,10 @@ const gameBoard = () => {
         }
     };
 
+    const identifyShip = function (hitShip) {
+        switch()
+    };
+
     createGameBoard();
     return {
         addShip: length => {
@@ -22,18 +26,18 @@ const gameBoard = () => {
             return board;
         },
         //Vertical is a boolean
-        positionShip: (vertical, row, column, ship) => {
+        positionShip: (isVertical, row, column, ship) => {
             shipList.push(ship);
             const previousGameBoardState = [...board];
             for (let i = 0; i < ship.length; i++) {
-                if (board[row][column] === 1) {
+                if (board[row][column] != 0) {
                     board = [...previousGameBoardState];
                     break;
                 }
 
-                board[row][column] = 1;
+                board[row][column] = ship.length;
 
-                if (vertical) {
+                if (isVertical) {
                     row++;
                 } else {
                     column++;
@@ -44,7 +48,8 @@ const gameBoard = () => {
         receiveAttack: (row, column) => {
             //TODO: I need to somehow keep track of each ship object
             //H stands for hit
-            if (board[row][column] != 0 && board[row][column] == 1) {
+            if (board[row][column] != 0) {
+                identifyShip(board[row][column]);
                 board[row][column] = 'H';
             }
             //M stands for miss
