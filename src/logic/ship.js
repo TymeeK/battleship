@@ -1,5 +1,6 @@
 const ship = (hitPoints = 0) => {
     let hp = [];
+    let name = '';
 
     const createShipArray = function () {
         for (let i = 0; i < hitPoints; i++) {
@@ -19,6 +20,12 @@ const ship = (hitPoints = 0) => {
         },
         get hp() {
             return hp;
+        },
+        set name(name) {
+            this.name = name;
+        },
+        get name() {
+            return this.name;
         },
     };
 };
