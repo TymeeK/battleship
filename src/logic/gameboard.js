@@ -1,14 +1,14 @@
 const ship = require('./ship');
 
 const gameBoard = () => {
-    let gameBoard = [];
+    let board = [];
     const shipList = [];
     //When a gameBoard piece is empty, the value will be 0
     const createGameBoard = function () {
         for (let row = 0; row < 8; row++) {
-            gameBoard[row] = new Array();
+            board[row] = new Array();
             for (let column = 0; column < 8; column++) {
-                gameBoard[row].push(0);
+                board[row].push(0);
             }
         }
     };
@@ -19,22 +19,37 @@ const gameBoard = () => {
             return ship(4);
         },
         get board() {
-            return gameBoard;
+            return board;
         },
         //Vertical is a boolean
         positionShip: (vertical, row, column, ship) => {
-            const previousGameBoardState = [...gameBoard];
+            shipList.push(ship);
+            const previousGameBoardState = [...board];
             for (let i = 0; i < ship.length; i++) {
-                if (gameBoard[row][column] === 1) {
+                if (board[row][column] === 1) {
                     board = [...previousGameBoardState];
                     break;
                 }
-                gameBoard[row][column] = 1;
+
+                board[row][column] = 1;
+
                 if (vertical) {
                     row++;
                 } else {
                     column++;
                 }
+            }
+        },
+
+        receiveAttack: (row, column) => {
+            //TODO: I need to somehow keep track of each ship object
+            //H stands for hit
+            if (board[row][column] != 0 && board[row][column] == 1) {
+                board[row][column] = 'H';
+            }
+            //M stands for miss
+            else if (board[row][column] == 0) {
+                board[row][column] = 'M';
             }
         },
 
