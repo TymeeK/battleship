@@ -6,7 +6,7 @@ let defaultBoard;
 
 beforeEach(() => {
     game = gameBoard();
-    ship = jest.fn().mockReturnValue({ length: 2 });
+    ship = jest.fn().mockReturnValue({ name: 'Destroyer', length: 2 });
     defaultBoard = [
         [0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0],
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 afterEach(() => {
     game = gameBoard();
-    ship = jest.fn().mockReturnValue({ length: 2 });
+    ship = jest.fn().mockReturnValue({ name: 'Destroyer', length: 2 });
     defaultBoard = [
         [0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0],
@@ -44,61 +44,90 @@ it('Testing mock ship function', () => {
 });
 
 it('Testing the coordinates', () => {
+    expect(game.board).toStrictEqual(defaultBoard);
     expect(game.board).toBeTruthy();
 });
 
-it('Placing a ship at a coordinate vertically', () => {
-    expect(defaultBoard).toStrictEqual([
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-    ]);
-    expect(game.board).toStrictEqual(defaultBoard);
-    defaultBoard[3][4] = 1;
-    defaultBoard[4][4] = 1;
-    game.positionShip(true, 3, 4, ship());
-    expect(game.board).toStrictEqual(defaultBoard);
+describe('Testing positionShip function', () => {
+    it('Placing a ship at a coordinate vertically', () => {
+        expect(defaultBoard).toStrictEqual([
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+        ]);
+        expect(game.board).toStrictEqual(defaultBoard);
+        defaultBoard[3][4] = 1;
+        defaultBoard[4][4] = 1;
+        game.positionShip(true, 3, 4, ship());
+        expect(game.board).toStrictEqual(defaultBoard);
+    });
+
+    it('Placing a ship at a coordinate horizontally', () => {
+        expect(defaultBoard).toStrictEqual([
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0],
+        ]);
+        expect(game.board).toStrictEqual(defaultBoard);
+
+        expect(ship().length).toBe(2);
+        expect(game.board).toStrictEqual(defaultBoard);
+        defaultBoard[0][0] = 1;
+        defaultBoard[0][1] = 1;
+        game.positionShip(false, 0, 0, ship());
+
+        expect(game.board).toStrictEqual(defaultBoard);
+    });
+
+    it('Placing 2 ships on top of each other', () => {
+        expect(game.board).toStrictEqual(defaultBoard);
+        const fakeShip = jest.fn().mockReturnValue({ length: 2 });
+        expect(fakeShip()).toBeTruthy();
+        game.positionShip(true, 0, 0, fakeShip());
+        expect(fakeShip).toHaveBeenCalled();
+        defaultBoard[0][0] = 1;
+        defaultBoard[1][0] = 1;
+
+        expect(game.board).toStrictEqual(defaultBoard);
+        game.positionShip(false, 0, 0, ship());
+        expect(ship).toHaveBeenCalled();
+
+        expect(game.board).toStrictEqual(defaultBoard);
+    });
 });
 
-it('Placing a ship at a coordinate horizontally', () => {
-    expect(defaultBoard).toStrictEqual([
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-    ]);
-    expect(game.board).toStrictEqual(defaultBoard);
+describe('Testing attack function', () => {
+    it('Receiving an attack, miss and hit', () => {
+        expect(game.board).toStrictEqual(defaultBoard);
 
-    expect(ship().length).toBe(2);
-    expect(game.board).toStrictEqual(defaultBoard);
-    defaultBoard[0][0] = 1;
-    defaultBoard[0][1] = 1;
-    game.positionShip(false, 0, 0, ship());
+        const fakeShip = jest.fn().mockReturnValue({ length: 3 });
+        game.positionShip(false, 0, 0, fakeShip());
+        expect(fakeShip).toHaveBeenCalled();
 
-    expect(game.board).toStrictEqual(defaultBoard);
-});
+        defaultBoard[0][0] = 1;
+        defaultBoard[0][1] = 1;
+        defaultBoard[0][2] = 1;
 
-it('Placing 2 ships on top of each other', () => {
-    expect(game.board).toStrictEqual(defaultBoard);
-    const fakeShip = jest.fn().mockReturnValue({ length: 2 });
-    expect(fakeShip()).toBeTruthy();
-    game.positionShip(true, 0, 0, fakeShip());
-    expect(fakeShip).toHaveBeenCalled();
-    defaultBoard[0][0] = 1;
-    defaultBoard[1][0] = 1;
+        expect(game.board).toStrictEqual(defaultBoard);
 
-    expect(game.board).toStrictEqual(defaultBoard);
-    game.positionShip(false, 0, 0, ship());
-    expect(ship).toHaveBeenCalled();
+        game.receiveAttack(0, 1);
+        defaultBoard[0][1] = 'H';
+        expect(game.board).toStrictEqual(defaultBoard);
 
-    expect(game.board).toStrictEqual(defaultBoard);
+        game.receiveAttack(1, 1);
+        defaultBoard[1][1] = 'M';
+        expect(game.board).toStrictEqual(defaultBoard);
+    });
+
+    it('Identify a ship that has been hit', () => {});
 });
