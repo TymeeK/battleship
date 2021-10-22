@@ -86,3 +86,19 @@ it('Placing a ship at a coordinate horizontally', () => {
 
     expect(game.board).toStrictEqual(defaultBoard);
 });
+
+it('Placing 2 ships on top of each other', () => {
+    expect(game.board).toStrictEqual(defaultBoard);
+    const fakeShip = jest.fn().mockReturnValue({ length: 2 });
+    expect(fakeShip()).toBeTruthy();
+    game.positionShip(true, 0, 0, fakeShip());
+    expect(fakeShip).toHaveBeenCalled();
+    defaultBoard[0][0] = 1;
+    defaultBoard[1][0] = 1;
+
+    expect(game.board).toStrictEqual(defaultBoard);
+    game.positionShip(false, 0, 0, ship());
+    expect(ship).toHaveBeenCalled();
+
+    expect(game.board).toStrictEqual(defaultBoard);
+});

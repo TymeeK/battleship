@@ -23,14 +23,16 @@ const gameBoard = () => {
         },
         //Vertical is a boolean
         positionShip: (vertical, row, column, ship) => {
-            if (vertical) {
-                for (let i = 0; i < ship.length; i++) {
-                    gameBoard[row].splice(column, 1, 1);
-                    row++;
+            const previousGameBoardState = [...gameBoard];
+            for (let i = 0; i < ship.length; i++) {
+                if (gameBoard[row][column] === 1) {
+                    board = [...previousGameBoardState];
+                    break;
                 }
-            } else {
-                for (let i = 0; i < ship.length; i++) {
-                    gameBoard[row][column] = 1;
+                gameBoard[row][column] = 1;
+                if (vertical) {
+                    row++;
+                } else {
                     column++;
                 }
             }
