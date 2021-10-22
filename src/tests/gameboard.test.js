@@ -61,8 +61,8 @@ describe('Testing positionShip function', () => {
             [0, 0, 0, 0, 0, 0, 0, 0],
         ]);
         expect(game.board).toStrictEqual(defaultBoard);
-        defaultBoard[3][4] = 1;
-        defaultBoard[4][4] = 1;
+        defaultBoard[3][4] = 2;
+        defaultBoard[4][4] = 2;
         game.positionShip(true, 3, 4, ship());
         expect(game.board).toStrictEqual(defaultBoard);
     });
@@ -82,8 +82,8 @@ describe('Testing positionShip function', () => {
 
         expect(ship().length).toBe(2);
         expect(game.board).toStrictEqual(defaultBoard);
-        defaultBoard[0][0] = 1;
-        defaultBoard[0][1] = 1;
+        defaultBoard[0][0] = 2;
+        defaultBoard[0][1] = 2;
         game.positionShip(false, 0, 0, ship());
 
         expect(game.board).toStrictEqual(defaultBoard);
@@ -95,8 +95,8 @@ describe('Testing positionShip function', () => {
         expect(fakeShip()).toBeTruthy();
         game.positionShip(true, 0, 0, fakeShip());
         expect(fakeShip).toHaveBeenCalled();
-        defaultBoard[0][0] = 1;
-        defaultBoard[1][0] = 1;
+        defaultBoard[0][0] = 2;
+        defaultBoard[1][0] = 2;
 
         expect(game.board).toStrictEqual(defaultBoard);
         game.positionShip(false, 0, 0, ship());
@@ -114,9 +114,9 @@ describe('Testing attack function', () => {
         game.positionShip(false, 0, 0, fakeShip());
         expect(fakeShip).toHaveBeenCalled();
 
-        defaultBoard[0][0] = 1;
-        defaultBoard[0][1] = 1;
-        defaultBoard[0][2] = 1;
+        defaultBoard[0][1] = 3;
+        defaultBoard[0][2] = 3;
+        defaultBoard[0][0] = 3;
 
         expect(game.board).toStrictEqual(defaultBoard);
 
@@ -129,5 +129,14 @@ describe('Testing attack function', () => {
         expect(game.board).toStrictEqual(defaultBoard);
     });
 
-    it('Identify a ship that has been hit', () => {});
+    it('Identify a ship that has been hit', () => {
+        game.positionShip(false, 0, 0, ship());
+        expect(ship).toHaveBeenCalled();
+        defaultBoard[0][0] = 2;
+        defaultBoard[0][1] = 2;
+        game.receiveAttack(0, 1);
+        defaultBoard[0][1] = 'H';
+        expect(game.board).toStrictEqual(defaultBoard);
+        expect(game.identifyShip()).toBeTruthy();
+    });
 });
