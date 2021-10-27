@@ -2,7 +2,7 @@ const ship = require('./ship');
 
 const gameBoard = () => {
     let board = [];
-    const shipList = [];
+    let shipList = [];
     //When a gameBoard piece is empty, the value will be 0
     const createGameBoard = function () {
         for (let row = 0; row < 8; row++) {
@@ -13,19 +13,19 @@ const gameBoard = () => {
         }
     };
 
-    const identifyShip = function (hitShip) {
-        switch()
+    const updateBoard = function (ship) {
+        return (ship = ship == 0 ? (ship = 'M') : (ship = 'H'));
+    };
+
+    const identifyShip = function (ship) {
+        return shipList.find(object => object.length == ship);
     };
 
     createGameBoard();
     return {
-        addShip: length => {
-            return ship(4);
-        },
         get board() {
             return board;
         },
-        //Vertical is a boolean
         positionShip: (isVertical, row, column, ship) => {
             shipList.push(ship);
             const previousGameBoardState = [...board];
@@ -36,30 +36,26 @@ const gameBoard = () => {
                 }
 
                 board[row][column] = ship.length;
-
-                if (isVertical) {
-                    row++;
-                } else {
-                    column++;
-                }
+                isVertical ? row++ : column++;
             }
         },
 
         receiveAttack: (row, column) => {
             //TODO: I need to somehow keep track of each ship object
-            //H stands for hit
-            if (board[row][column] != 0) {
-                identifyShip(board[row][column]);
-                board[row][column] = 'H';
-            }
-            //M stands for miss
-            else if (board[row][column] == 0) {
-                board[row][column] = 'M';
-            }
+            //TODO: Update the appropriate ship object's health
+            const shipObject = board[row][column];
+            board[row][column] = updateBoard(board[row][column]);
+
+            if (shipObject != 0) return identifyShip(shipObject);
+            else return null;
         },
 
         get shipList() {
             return shipList;
+        },
+        //This is temporary
+        isOver: () => {
+            return shipList.every(ship => ship.hp == 0);
         },
     };
 };

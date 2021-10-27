@@ -6,7 +6,7 @@ let defaultBoard;
 
 beforeEach(() => {
     game = gameBoard();
-    ship = jest.fn().mockReturnValue({ name: 'Destroyer', length: 2 });
+    ship = jest.fn().mockReturnValue({ name: 'Destroyer', length: 2, hp: 2 });
     defaultBoard = [
         [0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0],
@@ -21,7 +21,7 @@ beforeEach(() => {
 
 afterEach(() => {
     game = gameBoard();
-    ship = jest.fn().mockReturnValue({ name: 'Destroyer', length: 2 });
+    ship = jest.fn().mockReturnValue({ name: 'Destroyer', length: 2, hp: 2 });
     defaultBoard = [
         [0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0],
@@ -132,11 +132,28 @@ describe('Testing attack function', () => {
     it('Identify a ship that has been hit', () => {
         game.positionShip(false, 0, 0, ship());
         expect(ship).toHaveBeenCalled();
+
         defaultBoard[0][0] = 2;
         defaultBoard[0][1] = 2;
-        game.receiveAttack(0, 1);
+
+        const attackReceived = game.receiveAttack(0, 1);
         defaultBoard[0][1] = 'H';
+
         expect(game.board).toStrictEqual(defaultBoard);
-        expect(game.identifyShip()).toBeTruthy();
+        expect(game.shipList).toBeTruthy();
+        expect(attackReceived).toBeTruthy();
+        expect(game.shipList).toBeTruthy();
+    });
+
+    it('All ships are sunk', () => {
+        game.positionShip(false, 0, 0, ship());
+        defaultBoard[0][0] = 2;
+        defaultBoard[0][1] = 2;
+
+        expect(game.board).toStrictEqual(defaultBoard);
+        game.receiveAttack(0, 0);
+        game.receiveAttack(0, 1);
+        ship().hp = 0;
+        expect(game.isOver()).toBe(true);
     });
 });
