@@ -20,7 +20,9 @@
     },
     "homepage": "https://github.com/TymeeK/battleship#readme",
     "devDependencies": {
+        "css-loader": "^6.5.0",
         "jest": "^27.3.1",
+        "style-loader": "^3.3.1",
         "webpack": "^5.59.0",
         "webpack-cli": "^4.9.1"
     },
