@@ -1,0 +1,36 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    list-style: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body {
+    background-color: pink;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.gameboard-container {
+    display: flex;
+    height: 600px;
+    width: 100%;
+    justify-content: space-around;
+    margin-bottom: 200px;
+}
+.gameboard {
+    display: grid;
+    height: 80%;
+    width: 500px;
+    background-color: white;
+    margin-top: 50px;
+    border: 5px solid black;
+}
