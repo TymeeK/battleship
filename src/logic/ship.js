@@ -1,22 +1,17 @@
 const ship = (hitPoints = 0) => {
-    let hp = [];
+    let hp = hitPoints;
     let name = '';
+    const length = hp;
 
-    const createShipArray = function () {
-        for (let i = 0; i < hitPoints; i++) {
-            hp.push(1);
-        }
-    };
-    createShipArray();
     return {
         isSunk: () => {
-            return hp.every(value => value === 0);
+            return hp == 0 ? true : false;
         },
-        hit: hit => {
-            hp[hit] = 0;
+        hit: () => {
+            hp--;
         },
         get length() {
-            return hp.length;
+            return length;
         },
         get hp() {
             return hp;

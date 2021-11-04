@@ -21,6 +21,10 @@ const gameBoard = () => {
         return shipList.find(object => object.length == ship);
     };
 
+    const checkAllShips = function () {
+        return shipList.every(ship => ship.isSunk());
+    };
+
     createGameBoard();
     return {
         get board() {
@@ -46,16 +50,16 @@ const gameBoard = () => {
             const shipObject = board[row][column];
             board[row][column] = updateBoard(board[row][column]);
 
-            if (shipObject != 0) return identifyShip(shipObject);
-            else return null;
+            if (shipObject != 0) {
+                const hitShip = identifyShip(shipObject);
+                hitShip.hit();
+                checkAllShips();
+                return true;
+            } else return false;
         },
 
         get shipList() {
             return shipList;
-        },
-        //This is temporary
-        isOver: () => {
-            return shipList.every(ship => ship.hp == 0);
         },
     };
 };

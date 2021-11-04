@@ -1,5 +1,9 @@
+const game = require('../logic/game');
+
 const ui = () => {
     const gameBoardGrid = document.querySelectorAll('.gameboard');
+    const gameLoop = game();
+
     function addSquares() {
         gameBoardGrid.forEach(board => {
             for (let i = 0; i < 64; i++) {
@@ -12,8 +16,6 @@ const ui = () => {
         });
     }
     function addData() {
-        const gridSquares = document.querySelectorAll('div[data-row]');
-
         gameBoardGrid.forEach(board => {
             let row = 1;
             let col = 0;
@@ -36,26 +38,21 @@ const ui = () => {
 
     function addMouseListener() {
         const aiGrid = document.querySelector('#ai-board');
-        const
-        // child.forEach(element => {
-        //     element.addEventListener('click', event => {
-        //         const target = event.target;
-        //         console.log(target);
-        //     });
-
-        //     element.addEventListener('mouseenter', event => {
-        //         const target = event.target;
-        //         target.style.backGroundColor = 'pink;';
-        //     });
-        // });
-
-        aiGrid.addEventListener('click', event => {
-            console.log(event.target);
+        aiGrid.childNodes.forEach(child => {
+            child.addEventListener('click', event => {
+                const colorSquare = gameLoop.playRound(
+                    child.dataset.row,
+                    child.dataset.col
+                );
+                event.target.style.backgroundColor = 'green';
+            });
+            child.addEventListener('mouseenter', () => {
+                child.style.backgroundColor = 'pink';
+            });
+            child.addEventListener('mouseleave', () => {
+                child.style.backgroundColor = 'transparent';
+            });
         });
-
-        // aiGrid.addEventListener('mouseenter', event => {
-        //     console.log(event.target);
-        // });
     }
 
     return {
