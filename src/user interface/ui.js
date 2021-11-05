@@ -38,20 +38,34 @@ const ui = () => {
 
     function addMouseListener() {
         const aiGrid = document.querySelector('#ai-board');
+
         aiGrid.childNodes.forEach(child => {
-            child.addEventListener('click', event => {
+            child.addEventListener('mouseenter', mouseOverListener);
+            child.addEventListener('mouseleave', mouseLeaveListener);
+            child.addEventListener('click', mouseClickListener);
+
+            function mouseOverListener() {
+                child.style.backgroundColor = 'pink';
+            }
+            function mouseLeaveListener() {
+                child.style.backgroundColor = 'transparent';
+            }
+
+            function mouseClickListener(event) {
                 const colorSquare = gameLoop.playRound(
                     child.dataset.row,
                     child.dataset.col
                 );
-                event.target.style.backgroundColor = 'green';
-            });
-            child.addEventListener('mouseenter', () => {
-                child.style.backgroundColor = 'pink';
-            });
-            child.addEventListener('mouseleave', () => {
-                child.style.backgroundColor = 'transparent';
-            });
+                if (colorSquare) {
+                    event.target.style.backgroundColor = '#90EE90';
+                } else {
+                    event.target.style.backgroundColor = '#ff726f';
+                }
+                event.target.style.cursor = 'default';
+                child.removeEventListener('mouseenter', mouseOverListener);
+                child.removeEventListener('mouseleave', mouseLeaveListener);
+                child.removeEventListener('click', mouseClickListener);
+            }
         });
     }
 
