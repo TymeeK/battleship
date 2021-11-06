@@ -28,13 +28,34 @@ const ui = () => {
                     row++;
                     col = 0;
                 }
-                if (row == 8 && col == 8) {
-                    row = 0;
-                    col = 0;
-                }
             });
         });
     }
+
+    //I need to make a phase of the game where a player can position their ships
+
+    function placeShips() {
+        const playerGrid = document.querySelector('#player-board');
+        const humanPlayer = gameLoop.humanGameBoard;
+        let row = 0;
+        let col = 0;
+        playerGrid.childNodes.forEach(child => {
+            if (
+                humanPlayer.board[row][col] != 0 &&
+                child.dataset.row == row + 1 &&
+                child.dataset.col == col + 1
+            ) {
+                child.style.backgroundColor = 'yellow';
+            }
+            col++;
+            if (col % 8 == 0) {
+                col = 0;
+                row++;
+            }
+        });
+    }
+
+    function addStartButton() {}
 
     function addMouseListener() {
         const aiGrid = document.querySelector('#ai-board');
@@ -52,14 +73,15 @@ const ui = () => {
             }
 
             function mouseClickListener(event) {
-                const colorSquare = gameLoop.playRound(
+                const isHit = gameLoop.playRound(
                     child.dataset.row,
                     child.dataset.col
                 );
-                if (colorSquare) {
+                if (isHit) {
                     event.target.style.backgroundColor = '#90EE90';
                 } else {
                     event.target.style.backgroundColor = '#ff726f';
+                    console.log(gameLoop.currentPlayer);
                 }
                 event.target.style.cursor = 'default';
                 child.removeEventListener('mouseenter', mouseOverListener);
@@ -73,6 +95,7 @@ const ui = () => {
         initializeUI: () => {
             addSquares();
             addData();
+            placeShips();
             addMouseListener();
         },
     };

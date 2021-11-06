@@ -45,8 +45,6 @@ const gameBoard = () => {
         },
 
         receiveAttack: (row, column) => {
-            //TODO: I need to somehow keep track of each ship object
-            //TODO: Update the appropriate ship object's health
             const shipObject = board[row][column];
             board[row][column] = updateBoard(board[row][column]);
 

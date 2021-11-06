@@ -9,10 +9,11 @@ const gameLoop = () => {
     const aiGameBoard = gameBoard();
     let currentPlayer = humanPlayer;
 
-    function placeAiShips() {
+    function placeDefaultShips() {
         for (let i = 0; i < 5; i++) {
-            const aiShip = ship(i + 1);
-            aiGameBoard.positionShip(true, 0, i, aiShip);
+            const playerShip = ship(i + 1);
+            aiGameBoard.positionShip(true, 0, i, playerShip);
+            humanGameBoard.positionShip(true, 0, i, playerShip);
         }
     }
 
@@ -21,25 +22,40 @@ const gameLoop = () => {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
     }
+    function playRoundAi() {
+        currentPlayer = aiPlayer;
+        const aiRow = getRandomIntInclusive(0, 7);
+        const aiCol = getRandomIntInclusive(0, 7);
+        aiPlayer.rows = aiRow;
+        aiPlayer.cols = aiCol;
+        const isHitAi = humanGameBoard.receiveAttack(aiRow, aiCol);
+        if (isHitAi) {
+            playRoundAi();
+        }
+    }
+    placeDefaultShips();
 
-    placeAiShips();
     return {
         playRound: (row, column) => {
+            currentPlayer = humanPlayer;
             const isHit = aiGameBoard.receiveAttack(row - 1, column - 1);
             console.table(aiGameBoard.board);
 
             if (isHit) {
-                console.log("Still the player's turn");
                 return true;
+            } else {
+                playRoundAi();
             }
-            currentPlayer = aiPlayer;
-            const aiRow = getRandomIntInclusive(0, 7);
-            const aiCol = getRandomIntInclusive(0, 7);
-            const isHitAi = humanGameBoard.receiveAttack(aiRow, aiCol);
-            console.table(humanGameBoard.board);
         },
         get currentPlayer() {
             return currentPlayer;
+        },
+
+        get aiGameBoard() {
+            return aiGameBoard;
+        },
+        get humanGameBoard() {
+            return humanGameBoard;
         },
     };
 };

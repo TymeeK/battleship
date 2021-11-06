@@ -1,17 +1,17 @@
 const player = () => {
-    let row;
+    let rows;
     let col;
     return {
-        set row(row) {
-            this.row = row;
+        set rows(row) {
+            rows = row;
         },
-        get row() {
+        get rows() {
             return row;
         },
-        set col(col) {
-            this.col = col;
+        set cols(col) {
+            cols = col;
         },
-        get col() {
+        get cols() {
             return col;
         },
     };
