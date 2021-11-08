@@ -21,6 +21,7 @@ const gameLoop = () => {
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
     }
+
     function playRoundAi() {
         currentPlayer = aiPlayer;
         const aiRow = getRandomIntInclusive(0, 7);
@@ -55,6 +56,10 @@ const gameLoop = () => {
         },
         get humanGameBoard() {
             return humanGameBoard;
+        },
+        createShip: hp => {
+            const newShip = ship(hp);
+            return newShip;
         },
     };
 };

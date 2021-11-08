@@ -3,6 +3,8 @@ const game = require('../logic/game');
 const ui = () => {
     const gameBoardGrid = document.querySelectorAll('.gameboard');
     const gameLoop = game();
+    const playerGameBoard = gameLoop.humanGameBoard;
+    const shipList = [];
 
     function addSquares() {
         gameBoardGrid.forEach(board => {
@@ -35,7 +37,13 @@ const ui = () => {
     }
 
     function addShipsToBoard() {
+        createShips();
+        addShipsListener();
+    }
+
+    function addShipsListener() {
         const playerGrid = document.querySelector('#player-board');
+        let i = 0;
         playerGrid.childNodes.forEach(child => {
             child.addEventListener('mouseenter', mouseOverListener);
             child.addEventListener('mouseleave', mouseLeaveListener);
@@ -43,14 +51,29 @@ const ui = () => {
 
             function mouseOverListener(event) {
                 event.target.style.backgroundColor = 'yellow';
-                console.log(event.target);
             }
             function mouseLeaveListener(event) {
                 event.target.style.backgroundColor = 'transparent';
             }
 
-            function mouseClick(event) {}
+            function mouseClick(event) {
+                placeShips();
+                const row = event.target.dataset.row - 1;
+                const col = event.target.dataset.col - 1;
+                if (i != 5) {
+                    playerGameBoard.positionShip(true, row, col, shipList[i]);
+                    i++;
+                }
+            }
         });
+    }
+
+    function createShips() {
+        for (let i = 1; i <= 5; i++) {
+            const ship = gameLoop.createShip(i);
+            shipList.push(ship);
+        }
+        console.table(shipList);
     }
 
     function placeShips() {
@@ -122,7 +145,6 @@ const ui = () => {
             addSquares();
             addShipsToBoard();
             addData();
-            placeShips();
             addStartButton();
         },
     };
