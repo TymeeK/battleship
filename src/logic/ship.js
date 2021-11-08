@@ -2,6 +2,7 @@ const ship = (hitPoints = 0) => {
     let hp = hitPoints;
     let name = '';
     const length = hp;
+    let isVertical = true;
 
     return {
         isSunk: () => {
@@ -21,6 +22,12 @@ const ship = (hitPoints = 0) => {
         },
         get name() {
             return this.name;
+        },
+        set vertical(vertical) {
+            isVertical = vertical;
+        },
+        get vertical() {
+            return isVertical;
         },
     };
 };

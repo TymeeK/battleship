@@ -4,7 +4,7 @@ const gameBoard = () => {
     let board = [];
     let shipList = [];
     //When a gameBoard piece is empty, the value will be 0
-    const createGameBoard = function () {
+    const createAiGameBoard = function () {
         for (let row = 0; row < 8; row++) {
             board[row] = new Array();
             for (let column = 0; column < 8; column++) {
@@ -25,7 +25,7 @@ const gameBoard = () => {
         return shipList.every(ship => ship.isSunk());
     };
 
-    createGameBoard();
+    createAiGameBoard();
     return {
         get board() {
             return board;
@@ -41,6 +41,7 @@ const gameBoard = () => {
 
                 board[row][column] = ship.length;
                 isVertical ? row++ : column++;
+                ship.isVertical = isVertical;
             }
         },
 
@@ -58,6 +59,9 @@ const gameBoard = () => {
 
         get shipList() {
             return shipList;
+        },
+        idShip: ship => {
+            return identifyShip(ship);
         },
     };
 };

@@ -13,7 +13,6 @@ const gameLoop = () => {
         for (let i = 0; i < 5; i++) {
             const playerShip = ship(i + 1);
             aiGameBoard.positionShip(true, 0, i, playerShip);
-            humanGameBoard.positionShip(true, 0, i, playerShip);
         }
     }
 

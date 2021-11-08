@@ -40,3 +40,8 @@ body {
 #ai-board {
     cursor: pointer;
 }
+
+button {
+    cursor: pointer;
+    background-color: green;
+}

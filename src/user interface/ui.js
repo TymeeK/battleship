@@ -11,10 +11,12 @@ const ui = () => {
                 squares.style.border = '1px solid black';
                 squares.dataset.row = 0;
                 squares.dataset.col = 0;
+                squares.style.cursor = 'pointer';
                 board.appendChild(squares);
             }
         });
     }
+
     function addData() {
         gameBoardGrid.forEach(board => {
             let row = 1;
@@ -32,7 +34,24 @@ const ui = () => {
         });
     }
 
-    //I need to make a phase of the game where a player can position their ships
+    function addShipsToBoard() {
+        const playerGrid = document.querySelector('#player-board');
+        playerGrid.childNodes.forEach(child => {
+            child.addEventListener('mouseenter', mouseOverListener);
+            child.addEventListener('mouseleave', mouseLeaveListener);
+            child.addEventListener('click', mouseClick);
+
+            function mouseOverListener(event) {
+                event.target.style.backgroundColor = 'yellow';
+                console.log(event.target);
+            }
+            function mouseLeaveListener(event) {
+                event.target.style.backgroundColor = 'transparent';
+            }
+
+            function mouseClick(event) {}
+        });
+    }
 
     function placeShips() {
         const playerGrid = document.querySelector('#player-board');
@@ -46,6 +65,7 @@ const ui = () => {
                 child.dataset.col == col + 1
             ) {
                 child.style.backgroundColor = 'yellow';
+                child.style.cursor = 'pointer';
             }
             col++;
             if (col % 8 == 0) {
@@ -55,7 +75,13 @@ const ui = () => {
         });
     }
 
-    function addStartButton() {}
+    function addStartButton() {
+        const startButton = document.querySelector('#start-button');
+        startButton.addEventListener('click', () => {
+            startButton.style.display = 'none';
+            addMouseListener();
+        });
+    }
 
     function addMouseListener() {
         const aiGrid = document.querySelector('#ai-board');
@@ -94,9 +120,10 @@ const ui = () => {
     return {
         initializeUI: () => {
             addSquares();
+            addShipsToBoard();
             addData();
             placeShips();
-            addMouseListener();
+            addStartButton();
         },
     };
 };
