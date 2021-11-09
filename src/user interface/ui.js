@@ -36,7 +36,10 @@ const ui = () => {
         });
     }
 
-    function addShipsToBoard() {}
+    function addShipsToBoard() {
+        const placeShipButton = document.querySelector('#placement');
+        placeShipButton.addEventListener('click', () => {});
+    }
 
     function placeShips() {
         const playerGrid = document.querySelector('#player-board');
@@ -57,14 +60,6 @@ const ui = () => {
                 col = 0;
                 row++;
             }
-        });
-    }
-
-    function addStartButton() {
-        const startButton = document.querySelector('#start-button');
-        startButton.addEventListener('click', () => {
-            startButton.style.display = 'none';
-            addMouseListener();
         });
     }
 
@@ -107,7 +102,6 @@ const ui = () => {
             addSquares();
             addShipsToBoard();
             addData();
-            addStartButton();
         },
     };
 };
