@@ -43,5 +43,31 @@ body {
 
 button {
     cursor: pointer;
-    background-color: green;
+    /* background-color: green; */
+}
+#form-container {
+    padding: 10px;
+    width: 50%;
+    text-align: center;
+}
+.form {
+    border: 1px solid black;
+    background-color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    width: 100px;
+}
+
+#align {
+    cursor: pointer;
+}
+#align-label {
+    /* padding-right: 10px; */
+    margin-right: 10px;
+}
+
+#placement {
+    background-color: aliceblue;
+    padding: 5px;
+    border-radius: 5px;
 }

@@ -57,10 +57,6 @@ const gameLoop = () => {
         get humanGameBoard() {
             return humanGameBoard;
         },
-        createShip: hp => {
-            const newShip = ship(hp);
-            return newShip;
-        },
     };
 };
 

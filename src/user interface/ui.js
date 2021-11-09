@@ -36,45 +36,7 @@ const ui = () => {
         });
     }
 
-    function addShipsToBoard() {
-        createShips();
-        addShipsListener();
-    }
-
-    function addShipsListener() {
-        const playerGrid = document.querySelector('#player-board');
-        let i = 0;
-        playerGrid.childNodes.forEach(child => {
-            child.addEventListener('mouseenter', mouseOverListener);
-            child.addEventListener('mouseleave', mouseLeaveListener);
-            child.addEventListener('click', mouseClick);
-
-            function mouseOverListener(event) {
-                event.target.style.backgroundColor = 'yellow';
-            }
-            function mouseLeaveListener(event) {
-                event.target.style.backgroundColor = 'transparent';
-            }
-
-            function mouseClick(event) {
-                placeShips();
-                const row = event.target.dataset.row - 1;
-                const col = event.target.dataset.col - 1;
-                if (i != 5) {
-                    playerGameBoard.positionShip(true, row, col, shipList[i]);
-                    i++;
-                }
-            }
-        });
-    }
-
-    function createShips() {
-        for (let i = 1; i <= 5; i++) {
-            const ship = gameLoop.createShip(i);
-            shipList.push(ship);
-        }
-        console.table(shipList);
-    }
+    function addShipsToBoard() {}
 
     function placeShips() {
         const playerGrid = document.querySelector('#player-board');
