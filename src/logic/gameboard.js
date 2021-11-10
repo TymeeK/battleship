@@ -21,10 +21,6 @@ const gameBoard = () => {
         return shipList.find(object => object.length == ship);
     };
 
-    const checkAllShips = function () {
-        return shipList.every(ship => ship.isSunk());
-    };
-
     createAiGameBoard();
     return {
         get board() {
@@ -32,17 +28,19 @@ const gameBoard = () => {
         },
         positionShip: (isVertical, row, column, ship) => {
             shipList.push(ship);
-            const previousGameBoardState = [...board];
+            const previousGameBoardState = JSON.parse(JSON.stringify(board));
             for (let i = 0; i < ship.length; i++) {
                 if (board[row][column] != 0) {
-                    board = [...previousGameBoardState];
-                    break;
+                    console.table(previousGameBoardState);
+                    board = JSON.parse(JSON.stringify(previousGameBoardState));
+                    return false;
                 }
 
                 board[row][column] = ship.length;
                 isVertical ? row++ : column++;
                 ship.isVertical = isVertical;
             }
+            return true;
         },
 
         receiveAttack: (row, column) => {
@@ -51,8 +49,10 @@ const gameBoard = () => {
 
             if (shipObject != 0) {
                 const hitShip = identifyShip(shipObject);
+                if (hitShip == null) {
+                    return false;
+                }
                 hitShip.hit();
-                checkAllShips();
                 return true;
             } else return false;
         },
@@ -60,8 +60,8 @@ const gameBoard = () => {
         get shipList() {
             return shipList;
         },
-        idShip: ship => {
-            return identifyShip(ship);
+        checkAllShips: () => {
+            return shipList.every(ship => ship.isSunk());
         },
     };
 };

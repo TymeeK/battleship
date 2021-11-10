@@ -26,12 +26,8 @@ const gameLoop = () => {
         currentPlayer = aiPlayer;
         const aiRow = getRandomIntInclusive(0, 7);
         const aiCol = getRandomIntInclusive(0, 7);
-        aiPlayer.rows = aiRow;
-        aiPlayer.cols = aiCol;
-        const isHitAi = humanGameBoard.receiveAttack(aiRow, aiCol);
-        if (isHitAi) {
-            playRoundAi();
-        }
+        humanGameBoard.receiveAttack(aiRow, aiCol);
+        console.table(humanGameBoard.board);
     }
     placeDefaultShips();
 
@@ -40,11 +36,11 @@ const gameLoop = () => {
             currentPlayer = humanPlayer;
             const isHit = aiGameBoard.receiveAttack(row - 1, column - 1);
             console.table(aiGameBoard.board);
-
+            playRoundAi();
             if (isHit) {
                 return true;
             } else {
-                playRoundAi();
+                return false;
             }
         },
         get currentPlayer() {
@@ -56,6 +52,13 @@ const gameLoop = () => {
         },
         get humanGameBoard() {
             return humanGameBoard;
+        },
+        get aiGameBoard() {
+            return aiGameBoard;
+        },
+        createShip: health => {
+            const newShip = ship(health);
+            return newShip;
         },
     };
 };
