@@ -4,7 +4,7 @@ const ui = () => {
     const gameBoardGrid = document.querySelectorAll('.gameboard');
     const gameLoop = game();
     const playerGameBoard = gameLoop.humanGameBoard;
-    const shipList = [];
+    const aiGameBoard = gameLoop.aiGameBoard;
 
     function addSquares() {
         gameBoardGrid.forEach(board => {
@@ -39,10 +39,9 @@ const ui = () => {
     function addShipsToBoard() {
         const placeShipButton = document.querySelector('#placement');
         let i = 1;
-        placeShipButton.addEventListener('click', () => {
-            if (i == 5) {
-                //Remove event listeners and start game
-            }
+        placeShipButton.addEventListener('click', placeShip);
+
+        function placeShip() {
             const rowInput = document.querySelector('#row');
             const colInput = document.querySelector('#col');
             const vertCheckBox = document.querySelector('#align');
@@ -54,14 +53,34 @@ const ui = () => {
                 colInput.value - 1,
                 ship
             );
-            console.log(gameBoardState);
             if (gameBoardState) {
                 i++;
                 placeShips();
             } else {
-                console.log('Please enter a coordinate unoccupied by a ship');
+                //Let the user know what they did wrong
             }
-        });
+
+            if (i == 6) {
+                addMouseListener();
+                placeShipButton.removeEventListener('click', placeShip);
+                removeForms();
+                addGameStart();
+            }
+        }
+    }
+
+    function removeForms() {
+        const formContainer = document.querySelector('#form-container');
+        while (formContainer.hasChildNodes()) {
+            formContainer.removeChild(formContainer.firstChild);
+        }
+    }
+
+    function addGameStart() {
+        const formContainer = document.querySelector('#form-container');
+        const startHeader = document.createElement('h2');
+        startHeader.textContent = 'Game Start';
+        formContainer.appendChild(startHeader);
     }
 
     function placeShips() {
@@ -75,7 +94,11 @@ const ui = () => {
                 child.dataset.col == col + 1
             ) {
                 child.style.backgroundColor = 'yellow';
-                child.style.cursor = 'pointer';
+            }
+            if (playerGameBoard.board[row][col] == 'H') {
+                child.style.backgroundColor = '#90EE90';
+            } else if (playerGameBoard.board[row][col] == 'M') {
+                child.style.backgroundColor = '#ff726f';
             }
             col++;
             if (col % 8 == 0) {
@@ -109,8 +132,26 @@ const ui = () => {
                     event.target.style.backgroundColor = '#90EE90';
                 } else {
                     event.target.style.backgroundColor = '#ff726f';
-                    console.log(gameLoop.currentPlayer);
                 }
+                aiGameBoard.checkAllShips();
+
+                if (playerGameBoard.checkAllShips()) {
+                    removeForms();
+                    const formDiv = document.querySelector('#form-container');
+                    const h2Winner = document.createElement('h2');
+                    h2Winner.innerText = 'The ai wins!';
+                    formDiv.appendChild(h2Winner);
+                }
+
+                if (aiGameBoard.checkAllShips()) {
+                    removeForms();
+                    const formDiv = document.querySelector('#form-container');
+                    const h2Winner = document.createElement('h2');
+                    h2Winner.innerText = 'You are the winner!';
+                    formDiv.appendChild(h2Winner);
+                }
+                placeShips();
+
                 event.target.style.cursor = 'default';
                 child.removeEventListener('mouseenter', mouseOverListener);
                 child.removeEventListener('mouseleave', mouseLeaveListener);
