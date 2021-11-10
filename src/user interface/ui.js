@@ -38,17 +38,39 @@ const ui = () => {
 
     function addShipsToBoard() {
         const placeShipButton = document.querySelector('#placement');
-        placeShipButton.addEventListener('click', () => {});
+        let i = 1;
+        placeShipButton.addEventListener('click', () => {
+            if (i == 5) {
+                //Remove event listeners and start game
+            }
+            const rowInput = document.querySelector('#row');
+            const colInput = document.querySelector('#col');
+            const vertCheckBox = document.querySelector('#align');
+            const ship = gameLoop.createShip(i);
+
+            const gameBoardState = playerGameBoard.positionShip(
+                vertCheckBox.checked,
+                rowInput.value - 1,
+                colInput.value - 1,
+                ship
+            );
+            console.log(gameBoardState);
+            if (gameBoardState) {
+                i++;
+                placeShips();
+            } else {
+                console.log('Please enter a coordinate unoccupied by a ship');
+            }
+        });
     }
 
     function placeShips() {
         const playerGrid = document.querySelector('#player-board');
-        const humanPlayer = gameLoop.humanGameBoard;
         let row = 0;
         let col = 0;
         playerGrid.childNodes.forEach(child => {
             if (
-                humanPlayer.board[row][col] != 0 &&
+                playerGameBoard.board[row][col] != 0 &&
                 child.dataset.row == row + 1 &&
                 child.dataset.col == col + 1
             ) {

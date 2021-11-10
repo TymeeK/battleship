@@ -32,17 +32,19 @@ const gameBoard = () => {
         },
         positionShip: (isVertical, row, column, ship) => {
             shipList.push(ship);
-            const previousGameBoardState = [...board];
+            const previousGameBoardState = JSON.parse(JSON.stringify(board));
             for (let i = 0; i < ship.length; i++) {
                 if (board[row][column] != 0) {
-                    board = [...previousGameBoardState];
-                    break;
+                    console.table(previousGameBoardState);
+                    board = JSON.parse(JSON.stringify(previousGameBoardState));
+                    return false;
                 }
 
                 board[row][column] = ship.length;
                 isVertical ? row++ : column++;
                 ship.isVertical = isVertical;
             }
+            return true;
         },
 
         receiveAttack: (row, column) => {
